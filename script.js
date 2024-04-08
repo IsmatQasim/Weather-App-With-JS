@@ -16,17 +16,56 @@ let citySearch = document.querySelector(".weather_search");
 
 const getCountryName = (code) =>{
     return new Intl.DisplayNames([code], { type: 'region' }).of(code);
-
-
 }
+    
+const getDateTime = (dt) => {
+        const curDate = new Date(dt * 1000); // Convert seconds to milliseconds
+        const options = {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+        };
+      
+        const formatter = new Intl.DateTimeFormat("en-US", options);
+        return formatter.format(curDate);
+};
+let city = "Karachi";
+
+citySearch.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    let cityName = document. querySelector(".city_name");
+    city = cityName.value;
+
+    getWeatherData();
+    cityName.value = "";
+})
+
+
 const getWeatherData = async() =>{
-    const weatherUrl = `httpss://api.openweathermap.org/data/2.5/weather?q=karachi&APPID=9f3a3d8f87f542652b7877e6482c2310`;
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=9f3a3d8f87f542652b7877e6482c2310`;
     try{
         const res = await fetch(weatherUrl);
         const data = await res.json();
  
         const {main , name, weather, wind, sys , dt} = data; //destruction 
         cityName.textContent =` ${name} , ${getCountryName(sys.country)}`;
+        dateTime.innerHTML = getDateTime(dt);
+        
+
+        w_forecast.innerHTML = weather[0].main;
+        w_icon.innerHTML = `<img src="http://openweathermap.org/img/wn/${weather[0].icon}@4x.png" />`;
+        w_temperature.innerHTML = `${main.temp}°`;
+        w_minTem.innerHTML = `Min : ${main.temp_min.toFixed()}°`
+        w_maxTem.innerHTML = `Max : ${main.temp_max.toFixed()}°`;
+
+        w_feelsLike.innerHTML = `${main.feels_like.toFixed(2)}°`;
+        w_humidity.innerHTML = `${main.humidity}%`;
+        w_wind.innerHTML = `${wind.speed}m/s`;
+        w_pressure.innerHTML = `${main.pressure}hPa`;
     }
     catch(error){
         console.log(error);
