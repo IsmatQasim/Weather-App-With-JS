@@ -11,9 +11,8 @@ let w_humidity = document.querySelector(".weather_humidity");
 let w_wind = document.querySelector(".weather_wind");
 let w_pressure = document.querySelector(".weather_pressure");
 
+
 let citySearch = document.querySelector(".weather_search");
-
-
 const getCountryName = (code) =>{
     return new Intl.DisplayNames([code], { type: 'region' }).of(code);
 }
@@ -39,6 +38,7 @@ citySearch.addEventListener("submit", (e) => {
 
     let cityName = document. querySelector(".city_name");
     city = cityName.value;
+
 
     getWeatherData();
     cityName.value = "";
@@ -74,4 +74,3 @@ const getWeatherData = async() =>{
 
 document.body.addEventListener("load", getWeatherData()); //show the data when reload.
   
-
